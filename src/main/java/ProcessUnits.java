@@ -23,7 +23,7 @@ public class ProcessUnits
         {
             String line = value.toString();
             String lasttoken = null;
-            StringTokenizer s = new StringTokenizer(line,"\t");
+            StringTokenizer s = new StringTokenizer(line,",");
             String year = s.nextToken();
 
             while(s.hasMoreTokens())
@@ -75,8 +75,8 @@ public class ProcessUnits
         conf.setInputFormat(TextInputFormat.class);
         conf.setOutputFormat(TextOutputFormat.class);
 
-        FileInputFormat.setInputPaths(conf, new Path(args[0]));
-        FileOutputFormat.setOutputPath(conf, new Path(args[1]));
+        FileInputFormat.setInputPaths(conf, new Path("input_dir"));
+        FileOutputFormat.setOutputPath(conf, new Path("output_dir"));
 
         JobClient.runJob(conf);
     }
