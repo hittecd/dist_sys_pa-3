@@ -46,8 +46,7 @@ public class ProcessUnits
             int count = 0;
 
             while(values.hasNext()) {
-                values.next();
-                count++;
+                count += values.next().get();
             }
 
             output.collect(key, new IntWritable(count));
