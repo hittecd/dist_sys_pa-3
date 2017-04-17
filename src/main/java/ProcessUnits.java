@@ -75,8 +75,8 @@ public class ProcessUnits
         conf.setInputFormat(TextInputFormat.class);
         conf.setOutputFormat(TextOutputFormat.class);
 
-        FileInputFormat.setInputPaths(conf, new Path("input_dir"));
-        FileOutputFormat.setOutputPath(conf, new Path("output_dir"));
+        FileInputFormat.setInputPaths(conf, new Path(args[0]));
+        FileOutputFormat.setOutputPath(conf, new Path(args[1]));
 
         JobClient.runJob(conf);
     }

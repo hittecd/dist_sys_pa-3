@@ -3,3 +3,4 @@ target
 *.iml
 input_dir
 output_dir
+raw_data
