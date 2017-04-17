@@ -25,7 +25,7 @@ public class ProcessUnits
             String[] words = line.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
 
             for(String word : words) {
-                output.collect(new Text(word), new IntWritable(10));
+                output.collect(new Text(word), new IntWritable(1));
             }
         }
     }
@@ -42,10 +42,8 @@ public class ProcessUnits
         {
             int count = 0;
 
-            while (values.hasNext()) {
-                values.next();
-                count++;
-            }
+            if(values.hasNext())
+                count = values.next().get();
 
             output.collect(key, new IntWritable(count));
         }
