@@ -28,11 +28,9 @@ public class ProcessUnits
 
             while(s.hasMoreTokens())
             {
-                lasttoken=s.nextToken();
+                lasttoken = s.nextToken();
+                output.collect(new Text(year), new IntWritable(Integer.parseInt(lasttoken)));
             }
-
-            int avgprice = Integer.parseInt(lasttoken);
-            output.collect(new Text(year), new IntWritable(avgprice));
         }
     }
 
@@ -46,17 +44,17 @@ public class ProcessUnits
         public void reduce( Text key, Iterator <IntWritable> values,
                             OutputCollector<Text, IntWritable> output, Reporter reporter) throws IOException
         {
-            int maxavg=30;
-            int val = Integer.MIN_VALUE;
+            int count = 0;
+            int total = 0;
 
             while (values.hasNext())
             {
-                if((val=values.next().get())>maxavg)
-                {
-                    output.collect(key, new IntWritable(val));
-                }
+                count++;
+                total += values.next().get();
+
             }
 
+            output.collect(key, new IntWritable(total/count));
         }
     }
 
