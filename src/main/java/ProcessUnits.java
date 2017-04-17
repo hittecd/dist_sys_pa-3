@@ -15,17 +15,20 @@ public class ProcessUnits
                     Text,                /*Output key Type*/
                     IntWritable>        /*Output value Type*/
     {
-
+        private final static IntWritable one = new IntWritable(1);
+        private static Text keyword = new Text();
         //Map function
         public void map(LongWritable key, Text value,
                         OutputCollector<Text, IntWritable> output,
                         Reporter reporter) throws IOException
         {
+
             String line = value.toString();
             String[] words = line.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
 
             for(String word : words) {
-                output.collect(new Text(word), new IntWritable(1));
+                keyword.set(word);
+                output.collect(keyword, one);
             }
         }
     }
@@ -42,8 +45,10 @@ public class ProcessUnits
         {
             int count = 0;
 
-            if(values.hasNext())
-                count = values.next().get();
+            while(values.hasNext()) {
+                values.next();
+                count++;
+            }
 
             output.collect(key, new IntWritable(count));
         }
