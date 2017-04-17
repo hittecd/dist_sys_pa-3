@@ -25,7 +25,7 @@ public class ProcessUnits
             String[] words = line.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
 
             for(String word : words) {
-                output.collect(new Text(word), new IntWritable(1));
+                output.collect(new Text(word), new IntWritable(10));
             }
         }
     }
