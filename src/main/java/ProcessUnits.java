@@ -22,17 +22,11 @@ public class ProcessUnits
                         Reporter reporter) throws IOException
         {
             String line = value.toString();
-            String lasttoken = null;
-            StringTokenizer s = new StringTokenizer(line,",");
-            String year = s.nextToken();
+            String[] words = line.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
 
-            while(s.hasMoreTokens())
-            {
-                lasttoken=s.nextToken();
+            for(String word : words) {
+                output.collect(new Text(word), new IntWritable(1));
             }
-
-            int avgprice = Integer.parseInt(lasttoken);
-            output.collect(new Text(year), new IntWritable(avgprice));
         }
     }
 
@@ -46,17 +40,12 @@ public class ProcessUnits
         public void reduce( Text key, Iterator <IntWritable> values,
                             OutputCollector<Text, IntWritable> output, Reporter reporter) throws IOException
         {
-            int maxavg=30;
-            int val = Integer.MIN_VALUE;
+            int count = 0;
 
             while (values.hasNext())
-            {
-                if((val=values.next().get())>maxavg)
-                {
-                    output.collect(key, new IntWritable(val));
-                }
-            }
+                count++;
 
+            output.collect(key, new IntWritable(count));
         }
     }
 
@@ -66,7 +55,7 @@ public class ProcessUnits
     {
         JobConf conf = new JobConf(ProcessUnits.class);
 
-        conf.setJobName("max_eletricityunits");
+        conf.setJobName("word_count");
         conf.setOutputKeyClass(Text.class);
         conf.setOutputValueClass(IntWritable.class);
         conf.setMapperClass(E_EMapper.class);
