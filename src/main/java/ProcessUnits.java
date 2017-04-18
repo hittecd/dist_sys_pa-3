@@ -24,9 +24,12 @@ public class ProcessUnits
         {
 
             String line = value.toString();
-            String[] words = line.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
 
-            for(String word : words) {
+            line = line.replaceAll("[^AGCT]", "");
+
+            String word;
+            for(int i = 0; i+3 < line.length(); i++) {
+                word = line.substring(i, i+3);
                 keyword.set(word);
                 output.collect(keyword, one);
             }
